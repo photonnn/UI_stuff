@@ -2,6 +2,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  --carHeight: 600px;
+  --carWidth: 800px;
+  --svgHeight: 50px;
 }
 
 html {
@@ -10,8 +13,8 @@ html {
 }
 
 body {
-  height: 100vh;
-  background-color: rgb(248, 42, 42);
+  height: 100%;
+  background-color: rgb(184, 142, 142);
   display: flex;
   flex-direction: column;
 }
@@ -31,6 +34,7 @@ header {
   height: 100%;
 }
 
+/* HAMBURGER MENU */ 
 .menuBtn:hover {
   opacity: 0.5;
 }
@@ -39,12 +43,85 @@ header {
   height: 100%;
   width: 0px;
   background-color: aliceblue;
-  position: absolute;
+  position: fixed;
+  z-index: 2;
   left: 0;
   transition: width 300ms ease-in-out;
+}
+
+#hamburgerMenu > * {
+  display: none;
 }
 
 #hamburgerMenu.visible {
   display: initial !important;
   width: 500px;
 }
+
+#hamburgerMenu.visible > * {
+  display: initial;
+}
+
+/* CAROUSEL */
+
+.container {
+  width: 100%;
+  height: 100%;
+  padding: 3.25% 0 3.25% 0;
+  border: 10px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel {
+  position: absolute;
+  width: var(--carWidth);
+  height: var(--carHeight);
+  user-select: none;
+  overflow: hidden;
+}
+
+.carousel img {
+  object-fit: cover;
+  height: 100%;
+  max-width: 100%;
+  transition: transform 1000ms ease-in-out;
+}
+
+.carousel .images {
+  width: fit-content;
+  height: var(--carHeight);
+  display: flex;
+  flex-direction: row;
+  transition: transform 1000ms ease-in-out;
+}
+
+.carousel .left, .carousel .right {
+  height: var(--svgHeight);
+  width: var(--svgHeight);
+  position: absolute;
+  top: calc(100% - var(--carHeight) / 2 - var(--svgHeight) / 2);
+  z-index: 1;
+}
+
+.carousel .left {
+  left: 0;
+}
+
+.carousel .right {
+  right: 0;
+}
+
+.carousel .right:hover {
+  background-color: yellowgreen;
+}
+
+/*
+img {
+  object-fit: cover;
+  max-height: 100%;
+  max-width: 100%;
+  border: 1px solid black;
+}
+*/
