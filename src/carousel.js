@@ -1,5 +1,8 @@
 // Find a way to assign to array automatically!
 const arr = ['img_1.png', 'img_2.png', 'img_3.png', 'img_4.png'];
+// ideally assign these buttons based on array
+// they represent id's
+const btns = ['btn_1', 'btn_2', 'btn_3', 'btn_4'];
 
 function getNumber(direction) {
   const images = [...document.querySelectorAll('.carousel img')];
@@ -31,10 +34,18 @@ function assignNextOrPrev(number, direction) {
   images[number].classList.add(`${direction}`);
 }
 
+function setupButton(number) {
+  const prevSelected = document.querySelector('.selected');
+  prevSelected.classList.remove('selected');
+
+  const btn = document.querySelector(`#${btns[number]}`);
+  btn.classList.add('selected');
+}
+
 // prev and next always have to be 2 units away from each other
 // therefore when one changes so must the other one
 function setupNextAndPrev(number, direction) {
-  const newNumber = ((number + 2) % 4);
+  const newNumber = (number + 2) % 4;
   if (direction === 'next') {
     assignNextOrPrev(newNumber, 'prev');
   } else {
@@ -50,6 +61,7 @@ function next() {
   let nextNumber = getNumber(nextImg);
 
   setupTransform(nextNumber);
+  setupButton(nextNumber);
 
   if (nextNumber + 1 === arr.length) nextNumber = -1;
   nextImg.classList.remove('next');
@@ -65,6 +77,7 @@ function previous() {
   let prevNumber = getNumber(prevImg);
 
   setupTransform(prevNumber);
+  setupButton(prevNumber);
 
   if (prevNumber === 0) prevNumber = arr.length;
   prevImg.classList.remove('prev');
@@ -95,4 +108,25 @@ const left = document.querySelector('.left');
 left.addEventListener('click', () => {
   resetInterval();
   previous();
+});
+
+btns.forEach((element, i) => {
+  const btn = document.querySelector(`#${btns[i]}`);
+  btn.addEventListener('click', () => {
+    const nextImg = document.querySelector('.next');
+    const curNumber = (getNumber(nextImg) + 3) % 4;
+    // i -> the one that you click 0-3
+    // curNumber self explanatory 0-3
+    if (i - curNumber > 0) {
+      for (let j = 0; j < i - curNumber; j += 1) {
+        resetInterval();
+        next();
+      }
+    } else {
+      for (let j = 0; j < curNumber - i; j += 1) {
+        resetInterval();
+        previous();
+      }
+    }
+  });
 });
